@@ -7,6 +7,16 @@ services:
     ports:
       - '6379:6379'
 
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=redis:redis
+    ports:
+      - "8088:8088"
+
   postgres:
     image: postgres:12
     container_name: postgres

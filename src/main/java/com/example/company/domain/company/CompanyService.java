@@ -17,7 +17,7 @@ public class CompanyService {
   public Mono<CompanyEntity> findCompanyByIdentificationNumber(final String identificationNumber) {
     var requestAndSaveCompanyMono =
         this.client
-            .findCompanyByIdentificationNumber(identificationNumber)
+            .findCompanyByIdentificationNumberV1(identificationNumber)
             .flatMap(
                 companyDto -> {
                   if (ERROR.equals(companyDto.getStatus())) {

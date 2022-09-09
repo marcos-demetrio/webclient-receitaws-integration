@@ -7,25 +7,25 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import com.example.company.domain.ReactorRetry;
 import com.example.company.domain.exception.DomainException;
 import com.example.company.domain.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-@RequiredArgsConstructor
 @Service
 public class CompanyClient {
-  private static final String API_ENDPOINT = "https://receitaws.com.br/v1/cnpj/%s";
+  private static final String API_ENDPOINT = "https://receitaws.com.br/v1";
 
   private final WebClient webClient;
 
-  public Mono<CompanyDto> findCompanyByIdentificationNumber(final String identificationNumber) {
-    var uri = String.format(API_ENDPOINT, identificationNumber);
+  public CompanyClient(WebClient.Builder builder) {
+    this.webClient = builder.baseUrl(API_ENDPOINT).build();
+  }
 
+  public Mono<CompanyDto> findCompanyByIdentificationNumberV1(final String identificationNumber) {
     return this.webClient
         .get()
-        .uri(uri)
+        .uri(builder -> builder.path("/cnpj/{identificationNumber}").build(identificationNumber))
         .accept(APPLICATION_JSON)
         .retrieve()
         .onStatus(
